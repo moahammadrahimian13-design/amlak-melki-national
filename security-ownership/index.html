@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سامانه احراز هویت و مالکیت | محمد رحیمیان ملکی</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{--primary:#0f2c5c;--secondary:#2c7be5;--accent:#f5a623;--green:#10b981;--red:#ef4444;--dark:#1a2332;--light:#f4f7fb;--white:#fff;--text:#2d3748;--gray:#718096;--border:#e2e8f0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--light);color:var(--text);direction:rtl;line-height:1.7;}
+.top-bar{background:var(--primary);color:#cbd5e0;font-size:12px;padding:10px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.back-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 16px;border-radius:8px;text-decoration:none;font-size:12px;}
+.hero{background:linear-gradient(135deg,#0f2c5c,#1e4a8a);color:#fff;padding:55px 5% 45px;text-align:center;}
+.hero-icon{width:70px;height:70px;background:rgba(255,255,255,.15);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 18px;border:2px solid rgba(255,255,255,.3);}
+.hero h1{font-size:24px;font-weight:900;margin-bottom:10px;}
+.hero p{font-size:14px;opacity:.9;}
+.container{max-width:750px;margin:0 auto;padding:35px 5%;}
+.card{background:var(--white);border-radius:20px;padding:35px;box-shadow:0 8px 30px rgba(0,0,0,.08);}
+.card h2{color:var(--primary);font-size:19px;margin-bottom:22px;font-weight:800;text-align:center;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:13px;font-weight:bold;color:var(--text);margin-bottom:7px;}
+.form-group input,.form-group select{width:100%;padding:13px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;background:var(--light);transition:.3s;}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--secondary);background:#fff;}
+.btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;padding:14px;border-radius:10px;font-family:inherit;font-weight:bold;font-size:15px;cursor:pointer;width:100%;transition:.3s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(44,123,229,.3);}
+.ip-box{background:#fef3c7;border-right:4px solid var(--accent);padding:12px;border-radius:10px;margin-bottom:18px;font-size:13px;color:#92400e;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:5px;}
+.legal-box{background:#fef2f2;border-right:4px solid var(--red);padding:15px;border-radius:10px;margin-bottom:20px;font-size:12px;color:#991b1b;line-height:1.8;}
+.legal-box strong{color:#7f1d1d;}
+.info-box{background:#eff6ff;border-right:4px solid var(--secondary);padding:13px;border-radius:10px;margin-bottom:18px;font-size:13px;color:var(--primary);}
+.section-title{text-align:center;font-size:14px;color:var(--gray);margin-bottom:20px;font-weight:bold;}
+.divider{display:flex;align-items:center;gap:10px;margin:20px 0;}
+.divider .line{flex:1;height:1px;background:var(--border);}
+.divider span{font-size:12px;color:var(--gray);}
+.footer-note{text-align:center;font-size:12px;color:var(--gray);margin-top:25px;padding-top:20px;border-top:1px solid var(--border);}
+.footer-note strong{color:var(--primary);}
+.toast{position:fixed;top:25px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:14px 28px;border-radius:10px;z-index:2000;display:none;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.3);}
+@media(max-width:600px){.card{padding:22px;}.hero h1{font-size:19px;}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+<span>🔐 سامانه امنیت، مالکیت و احراز هویت</span>
+<a href="../index.html" class="back-btn">← بازگشت به سایت اصلی</a>
+</div>
+
+<div class="hero">
+<div class="hero-icon">🔐</div>
+<h1>سامانه احراز هویت و مالکیت</h1>
+<p>پلتفرم ملی املاک ملکی | مدیریت: محمد رحیمیان ملکی</p>
+</div>
+
+<div class="container">
+<div class="card">
+<h2>📝 فرم احراز هویت و ثبت‌نام</h2>
+
+<div class="legal-box">
+⚠️ <strong>هشدار قانونی:</strong> هرگونه سوءاستفاده از سمت، دسترسی، اطلاعات یا اختیارات در این سامانه، طبق ماده ۵۷۵ قانون مجازات اسلامی (تعزیرات) و قانون جرایم رایانه‌ای، <strong>جرم محسوب شده و پیگرد قانونی به همراه دارد.</strong> تمامی فعالیت‌های شما در این سامانه ثبت شده و در صورت تخلف، به مراجع قضایی ارجاع داده خواهد شد.
+</div>
+
+<div class="ip-box">
+<span>📍 IP فعلی شما:</span>
+<span id="currentIP">در حال دریافت...</span>
+</div>
+
+<div class="info-box">
+ℹ️ سیستم بر اساس <strong>مدرک‌گرایی و تخصص فنی</strong> طراحی شده است. هر کاربر فقط به بخش مربوط به مدرک و تخصص خود دسترسی دارد.
+</div>
+
+<div class="form-group">
+<label>نوع کاربری خود را انتخاب کنید *</label>
+<select id="userType" onchange="updateFormFields()">
+<option value="">-- انتخاب کنید --</option>
+<option value="citizen">👤 فرد عادی (خریدار / فروشنده)</option>
+<option value="nezam">📋 نظام مهندسی</option>
+<option value="karshenas">⚖️ کارشناسان قضایی</option>
+<option value="daftar">📝 دفاتر خدمات قضایی</option>
+<option value="sabt">📜 ثبت اسناد</option>
+<option value="darayi">💰 دارایی و مالیات</option>
+<option value="shahrdari">🏛️ شهرداری</option>
+<option value="ahval">🆔 ثبت احوال</option>
+<option value="kadaster">🗺️ کاداستر</option>
+<option value="ghave">⚖️ قوه قضاییه</option>
+<option value="export">🌍 صادرات و واردات</option>
+</select>
+</div>
+
+<div id="dynamicFields"></div>
+
+<div class="divider"><div class="line"></div><span>اطلاعات هویتی</span><div class="line"></div></div>
+
+<div class="form-group">
+<label>نام و نام خانوادگی *</label>
+<input type="text" id="fullName" placeholder="مثال: محمد رحیمیان">
+</div>
+
+<div class="form-group">
+<label>کد ملی *</label>
+<input type="text" id="nationalCode" placeholder="۱۰ رقم" maxlength="10">
+</div>
+
+<div class="form-group">
+<label>شماره موبایل *</label>
+<input type="tel" id="phoneNumber" placeholder="۰۹۱۲۳۴۵۶۷۸۹">
+</div>
+
+<button class="btn" onclick="handleSubmit()">✅ تایید و ثبت احراز هویت</button>
+
+<div class="footer-note">
+این سامانه تحت مدیریت <strong>محمد رحیمیان ملکی</strong> فعالیت می‌کند.<br>
+© ۱۴۰۳ - پلتفرم ملی املاک ملکی | تمامی حقوق محفوظ است.
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== فیلدهای اختصاصی هر بخش ====================
+const fieldsMap = {
+    citizen: [
+        { id: 'userRole', label: 'نقش شما', type: 'select', options: ['خریدار','فروشنده','مشاور املاک','اجاره‌نشین'], placeholder: 'انتخاب کنید' }
+    ],
+    nezam: [
+        { id: 'parvaneh', label: 'شماره پروانه ساخت *', type: 'text', placeholder: 'شماره پروانه' },
+        { id: 'metraj', label: 'متراژ ملک (متر) *', type: 'number', placeholder: 'مثال: 120' },
+        { id: 'tabaghat', label: 'تعداد طبقات *', type: 'number', placeholder: 'مثال: 5' }
+    ],
+    karshenas: [
+        { id: 'parvaneKarshenasi', label: 'شماره پروانه کارشناسی دادگستری *', type: 'text', placeholder: 'شماره پروانه' },
+        { id: 'hovezeh', label: 'حوزه فعالیت *', type: 'text', placeholder: 'مثال: تهران' }
+    ],
+    daftar: [
+        { id: 'mojavvez', label: 'شماره مجوز دفتر *', type: 'text', placeholder: 'شماره مجوز' },
+        { id: 'address', label: 'آدرس دفتر *', type: 'text', placeholder: 'آدرس کامل' }
+    ],
+    sabt: [
+        { id: 'shomareSanad', label: 'شماره سند تک‌برگ *', type: 'text', placeholder: 'شماره سند' },
+        { id: 'kodPosti', label: 'کد پستی ملک *', type: 'text', placeholder: '۱۰ رقم', maxlength: '10' }
+    ],
+    darayi: [
+        { id: 'kodEghtesadi', label: 'کد اقتصادی *', type: 'text', placeholder: 'کد اقتصادی' },
+        { id: 'shomareParvande', label: 'شماره پرونده مالیاتی *', type: 'text', placeholder: 'شماره پرونده' }
+    ],
+    shahrdari: [
+        { id: 'kodPosti', label: 'کد پستی *', type: 'text', placeholder: '۱۰ رقم', maxlength: '10' },
+        { id: 'tarakom', label: 'تراکم مجاز *', type: 'number', placeholder: 'مثال: 3' }
+    ],
+    ahval: [
+        { id: 'tarikhTavalod', label: 'تاریخ تولد *', type: 'text', placeholder: '۱۳۷۰/۰۱/۰۱' },
+        { id: 'shomareShenasnameh', label: 'شماره شناسنامه *', type: 'text', placeholder: 'شماره شناسنامه' }
+    ],
+    kadaster: [
+        { id: 'gps', label: 'مختصات GPS *', type: 'text', placeholder: 'مثال: 35.6892, 51.3890' },
+        { id: 'shomareNaghshe', label: 'شماره نقشه *', type: 'text', placeholder: 'شماره نقشه' }
+    ],
+    ghave: [
+        { id: 'shomareParvande', label: 'شماره پرونده *', type: 'text', placeholder: 'شماره پرونده' },
+        { id: 'noeParvande', label: 'نوع پرونده *', type: 'select', options: ['حقوقی','کیفری','خانواده','ملکی'], placeholder: 'انتخاب کنید' }
+    ],
+    export: [
+        { id: 'kodArzi', label: 'کد ارزی *', type: 'text', placeholder: 'کد ارزی' },
+        { id: 'kashvar', label: 'کشور مقصد *', type: 'text', placeholder: 'نام کشور' }
+    ]
+};
+
+function updateFormFields() {
+    const type = document.getElementById('userType').value;
+    const container = document.getElementById('dynamicFields');
+    container.innerHTML = '';
+    if (!type || !fieldsMap[type]) return;
+    
+    fieldsMap[type].forEach(field => {
+        const div = document.createElement('div');
+        div.className = 'form-group';
+        if (field.type === 'select') {
+            div.innerHTML = `<label>${field.label}</label><select id="${field.id}"><option value="">${field.placeholder || 'انتخاب کنید'}</option>${field.options.map(o => `<option>${o}</option>`).join('')}</select>`;
+        } else {
+            div.innerHTML = `<label>${field.label}</label><input type="${field.type}" id="${field.id}" placeholder="${field.placeholder || ''}" ${field.maxlength ? `maxlength="${field.maxlength}"` : ''}>`;
+        }
+        container.appendChild(div);
+    });
+}
+
+function showToast(msg, color = '#1a2332') {
+    const t = document.getElementById('toast');
+    t.style.background = color; t.textContent = msg; t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+}
+
+async function getUserIP() {
+    try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        document.getElementById('currentIP').textContent = data.ip;
+        localStorage.setItem('userIP', data.ip);
+        return data.ip;
+    } catch(e) {
+        document.getElementById('currentIP').textContent = 'نامشخص';
+        return 'unknown';
+    }
+}
+
+function handleSubmit() {
+    const type = document.getElementById('userType').value;
+    const name = document.getElementById('fullName').value;
+    const national = document.getElementById('nationalCode').value;
+    const phone = document.getElementById('phoneNumber').value;
+    
+    if (!type) { showToast('لطفاً نوع کاربری را انتخاب کنید', '#ef4444'); return; }
+    if (!name || !national || !phone) { showToast('لطفاً اطلاعات هویتی را کامل کنید', '#ef4444'); return; }
+    if (national.length !== 10) { showToast('کد ملی باید ۱۰ رقم باشد', '#ef4444'); return; }
+    
+    getUserIP().then(ip => {
+        const userData = {
+            type, name, national, phone, ip,
+            role: type,
+            verified: false,
+            date: new Date().toISOString()
+        };
+        const users = JSON.parse(localStorage.getItem('verifiedUsers') || '[]');
+        users.push(userData);
+        localStorage.setItem('verifiedUsers', JSON.stringify(users));
+        
+        showToast(`✅ ثبت موفق | نقش: ${type} | IP: ${ip}`, '#10b981');
+        
+        setTimeout(() => {
+            if (type === 'citizen') {
+                window.location.href = '../index.html';
+            }
+        }, 2000);
+    });
+}
+
+window.addEventListener('load', () => { getUserIP(); });
+</script>
+</body>
+  </html>
