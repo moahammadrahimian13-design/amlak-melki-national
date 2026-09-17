@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل ادارات | پروژه ملی املاک ملکی</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{--primary:#0f2c5c;--secondary:#2c7be5;--accent:#f5a623;--green:#10b981;--red:#ef4444;--dark:#1a2332;--light:#f4f7fb;--white:#fff;--text:#2d3748;--gray:#718096;--border:#e2e8f0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--light);color:var(--text);direction:rtl;line-height:1.7;}
+.top-bar{background:var(--primary);color:#cbd5e0;font-size:12px;padding:10px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:5px;}
+.back-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 16px;border-radius:8px;text-decoration:none;font-size:12px;}
+.hero{background:linear-gradient(135deg,#0f2c5c,#1e4a8a);color:#fff;padding:50px 5% 40px;text-align:center;}
+.hero h1{font-size:24px;font-weight:900;margin-bottom:10px;}
+.hero p{font-size:14px;opacity:.9;}
+.container{max-width:1250px;margin:0 auto;padding:35px 5%;}
+.org-panel{background:#fff;border-radius:20px;padding:30px;box-shadow:0 8px 30px rgba(0,0,0,.08);margin-bottom:30px;}
+.org-panel h2{color:var(--primary);font-size:20px;margin-bottom:20px;font-weight:800;border-right:4px solid var(--secondary);padding-right:12px;}
+.file-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;}
+.file-card{background:var(--light);border:2px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:.3s;}
+.file-card:hover{border-color:var(--secondary);transform:translateY(-3px);box-shadow:0 8px 20px rgba(44,123,229,.15);}
+.file-card .f-icon{font-size:30px;margin-bottom:10px;display:block;}
+.file-card h4{color:var(--primary);font-size:14px;margin-bottom:6px;font-weight:700;}
+.file-card p{color:var(--gray);font-size:12px;line-height:1.6;}
+.file-status{display:inline-block;background:var(--green);color:#fff;padding:3px 10px;border-radius:15px;font-size:10px;margin-top:8px;font-weight:bold;}
+.toast{position:fixed;top:25px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:14px 28px;border-radius:10px;z-index:2000;display:none;font-size:14px;}
+footer{background:var(--dark);color:#a0aec0;padding:30px 5%;text-align:center;font-size:13px;margin-top:40px;}
+footer .manager{color:var(--accent);font-weight:bold;}
+@media(max-width:600px){.file-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+<span>🏢 پنل اختصاصی ادارات | پروژه ملی املاک ملکی</span>
+<a href="../core-1/index.html" class="back-btn">← بازگشت به صفحه اصلی</a>
+</div>
+
+<div class="hero">
+<h1>پنل اختصاصی ادارات</h1>
+<p>پروژه ملی املاک ملکی | AMLAK.malaki | مدیرعامل: محمد رحیمیان ملکی</p>
+</div>
+
+<div class="container" id="panelsContainer">
+<!-- محتوای پنل‌ها به صورت داینامیک تولید می‌شود -->
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+© ۱۴۰۳ - پروژه ملی املاک ملکی | AMLAK.malaki | مدیرعامل: <span class="manager">محمد رحیمیان ملکی</span>
+</footer>
+
+<script>
+// ==================== داده‌های ۱۰ اداره با ۱۰ کادر پرونده ====================
+const orgs = {
+    nezam: {
+        name: 'نظام مهندسی',
+        icon: '📋',
+        files: [
+            {icon:'📐', name:'پروانه ساخت', desc:'صدور و تایید پروانه ساخت ساختمان'},
+            {icon:'✅', name:'پایان کار', desc:'صدور گواهی پایان کار'},
+            {icon:'🏗️', name:'مجوز تخریب', desc:'مجوز تخریب بنای قدیمی'},
+            {icon:'📋', name:'تایید نقشه', desc:'تایید نقشه‌های ساختمانی'},
+            {icon:'🔍', name:'بازدید مهندسی', desc:'بازدید دوره‌ای از ساختمان'},
+            {icon:'🏢', name:'ارزیابی سازه', desc:'ارزیابی استحکام سازه'},
+            {icon:'🔄', name:'تغییر کاربری', desc:'مجوز تغییر کاربری ملک'},
+            {icon:'🛗', name:'تاییدیه آسانسور', desc:'تایید ایمنی آسانسور'},
+            {icon:'⚙️', name:'تاییدیه تاسیسات', desc:'تایید تاسیسات برقی و مکانیکی'},
+            {icon:'⚠️', name:'رفع تخلفات', desc:'رسیدگی به تخلفات ساختمانی'}
+        ]
+    },
+    sabt: {
+        name: 'ثبت اسناد',
+        icon: '📜',
+        files: [
+            {icon:'📄', name:'سند تک‌برگ', desc:'صدور سند تک‌برگ مالکیت'},
+            {icon:'📃', name:'سند منگوله‌دار', desc:'صدور سند منگوله‌دار'},
+            {icon:'🚫', name:'بازداشتی', desc:'استعلام بازداشتی ملک'},
+            {icon:'🔄', name:'نقل و انتقال', desc:'ثبت نقل و انتقالات'},
+            {icon:'🔁', name:'تعویض سند', desc:'تعویض سند قدیمی'},
+            {icon:'📝', name:'صدور سند جدید', desc:'صدور سند جدید مالکیت'},
+            {icon:'🔍', name:'استعلام مالکیت', desc:'استعلام مالک فعلی'},
+            {icon:'✅', name:'رفع توقیف', desc:'رفع توقیف از ملک'},
+            {icon:'⚰️', name:'انتقال قهری', desc:'انتقال قهری ملک'},
+            {icon:'📊', name:'سند ششدانگ', desc:'صدور سند ششدانگ'}
+        ]
+    },
+    darayi: {
+        name: 'دارایی و مالیات',
+        icon: '💰',
+        files: [
+            {icon:'💵', name:'مفاصاحساب', desc:'صدور مفاصاحساب مالیاتی'},
+            {icon:'📊', name:'بدهی مالیاتی', desc:'استعلام بدهی مالیاتی'},
+            {icon:'🏛️', name:'عوارض', desc:'پرداخت عوارض ملکی'},
+            {icon:'📋', name:'اظهارنامه', desc:'تنظیم اظهارنامه مالیاتی'},
+            {icon:'🔍', name:'حسابرسی', desc:'حسابرسی پرونده مالیاتی'},
+            {icon:'⚖️', name:'اعتراض', desc:'اعتراض به مالیات'},
+            {icon:'📅', name:'تقسیط', desc:'تقسیط بدهی مالیاتی'},
+            {icon:'✂️', name:'معافیت', desc:'درخواست معافیت مالیاتی'},
+            {icon:'📤', name:'ارسال پرونده', desc:'ارسال پرونده به اداره'},
+            {icon:'📥', name:'دریافت پاسخ', desc:'دریافت پاسخ استعلام'}
+        ]
+    },
+    shahrdari: {
+        name: 'شهرداری',
+        icon: '🏛️',
+        files: [
+            {icon:'📍', name:'کد پستی', desc:'استعلام کد پستی ملک'},
+            {icon:'📐', name:'متراژ', desc:'استعلام متراژ ملک'},
+            {icon:'🏗️', name:'تراکم', desc:'استعلام تراکم مجاز'},
+            {icon:'💰', name:'عوارض', desc:'پرداخت عوارض شهرداری'},
+            {icon:'⚠️', name:'تخلفات', desc:'استعلام تخلفات ساختمانی'},
+            {icon:'🔨', name:'پروانه تخریب', desc:'صدور پروانه تخریب'},
+            {icon:'🏗️', name:'پروانه ساخت', desc:'صدور پروانه ساخت'},
+            {icon:'✅', name:'پایان کار', desc:'صدور پایان کار شهرداری'},
+            {icon:'🔄', name:'تغییر کاربری', desc:'درخواست تغییر کاربری'},
+            {icon:'📊', name:'تراکم فروشی', desc:'خرید تراکم اضافه'}
+        ]
+    },
+    ahval: {
+        name: 'ثبت احوال',
+        icon: '🆔',
+        files: [
+            {icon:'👤', name:'احراز هویت', desc:'احراز هویت مالک'},
+            {icon:'🔑', name:'کد ملی', desc:'استعلام کد ملی'},
+            {icon:'📅', name:'تاریخ تولد', desc:'استعلام تاریخ تولد'},
+            {icon:'📃', name:'شناسنامه', desc:'استعلام شماره شناسنامه'},
+            {icon:'💳', name:'کارت ملی', desc:'صدور کارت ملی'},
+            {icon:'🔁', name:'تعویض کارت', desc:'تعویض کارت ملی'},
+            {icon:'✏️', name:'اصلاح مشخصات', desc:'اصلاح مشخصات هویتی'},
+            {icon:'💍', name:'وضعیت تاهل', desc:'استعلام وضعیت تاهل'},
+            {icon:'📋', name:'گواهی فوت', desc:'صدور گواهی فوت'},
+            {icon:'🌍', name:'گذرنامه', desc:'استعلام گذرنامه'}
+        ]
+    },
+    kadaster: {
+        name: 'کاداستر',
+        icon: '🗺️',
+        files: [
+            {icon:'📍', name:'مختصات GPS', desc:'ثبت مختصات دقیق ملک'},
+            {icon:'🗺️', name:'نقشه ملک', desc:'دریافت نقشه کاداستر'},
+            {icon:'📏', name:'مساحت دقیق', desc:'استعلام مساحت دقیق'},
+            {icon:'🏔️', name:'کاربری اراضی', desc:'استعلام کاربری زمین'},
+            {icon:'🌳', name:'منابع طبیعی', desc:'استعلام منابع طبیعی'},
+            {icon:'🏞️', name:'مراتع', desc:'استعلام مراتع'},
+            {icon:'🌲', name:'جنگل', desc:'استعلام جنگل'},
+            {icon:'🏘️', name:'روستا', desc:'استعلام محدوده روستا'},
+            {icon:'🏙️', name:'شهر', desc:'استعلام محدوده شهر'},
+            {icon:'📊', name:'سند کاداستر', desc:'صدور سند کاداستر'}
+        ]
+    },
+    ghave: {
+        name: 'قوه قضاییه',
+        icon: '⚖️',
+        files: [
+            {icon:'📁', name:'استعلام بازداشتی', desc:'استعلام بازداشتی ملک'},
+            {icon:'⚖️', name:'پرونده حقوقی', desc:'پیگیری پرونده حقوقی'},
+            {icon:'🔨', name:'پرونده کیفری', desc:'پیگیری پرونده کیفری'},
+            {icon:'👨‍👩‍👧', name:'پرونده خانواده', desc:'پیگیری پرونده خانواده'},
+            {icon:'📝', name:'تنظیم شکایت', desc:'تنظیم شکایت حقوقی'},
+            {icon:'🛡️', name:'دفاعیه', desc:'تنظیم دفاعیه'},
+            {icon:'💼', name:'وکالت', desc:'تنظیم وکالت‌نامه'},
+            {icon:'📜', name:'رای دادگاه', desc:'دریافت رای دادگاه'},
+            {icon:'🔍', name:'تحقیقات محلی', desc:'تحقیقات محلی ملک'},
+            {icon:'✅', name:'اجرای حکم', desc:'اجرای حکم قضایی'}
+        ]
+    },
+    daftar: {
+        name: 'دفاتر خدمات قضایی',
+        icon: '📝',
+        files: [
+            {icon:'✍️', name:'مبایعه‌نامه', desc:'تنظیم مبایعه‌نامه'},
+            {icon:'🤝', name:'وکالت‌نامه', desc:'تنظیم وکالت‌نامه'},
+            {icon:'📋', name:'اظهارنامه', desc:'تنظیم اظهارنامه قضایی'},
+            {icon:'⚖️', name:'شکایت‌نامه', desc:'تنظیم شکایت‌نامه'},
+            {icon:'🔒', name:'صلح‌نامه', desc:'تنظیم صلح‌نامه'},
+            {icon:'📄', name:'قولنامه', desc:'تنظیم قولنامه'},
+            {icon:'🖋️', name:'گواهی امضا', desc:'گواهی امضا'},
+            {icon:'📸', name:'تصدیق مدارک', desc:'تصدیق مدارک قضایی'},
+            {icon:'📤', name:'ارسال پرونده', desc:'ارسال پرونده به دادگاه'},
+            {icon:'📥', name:'دریافت پاسخ', desc:'دریافت پاسخ از دادگاه'}
+        ]
+    },
+    karshenas: {
+        name: 'کارشناسان قضایی',
+        icon: '👨‍⚖️',
+        files: [
+            {icon:'🏠', name:'ارزیابی ملک', desc:'ارزیابی رسمی قیمت ملک'},
+            {icon:'🔨', name:'کارشناسی تخریب', desc:'ارزیابی خسارت تخریب'},
+            {icon:'📐', name:'کارشناسی متراژ', desc:'کارشناسی دقیق متراژ'},
+            {icon:'🏗️', name:'کارشناسی سازه', desc:'ارزیابی استحکام سازه'},
+            {icon:'💧', name:'کارشناسی رطوبت', desc:'بررسی رطوبت ساختمان'},
+            {icon:'⚡', name:'کارشناسی برق', desc:'بررسی سیستم برقی'},
+            {icon:'🔧', name:'کارشناسی تاسیسات', desc:'بررسی تاسیسات'},
+            {icon:'📊', name:'کارشناسی قیمت', desc:'تعیین قیمت کارشناسی'},
+            {icon:'📝', name:'تنظیم گزارش', desc:'تنظیم گزارش کارشناسی'},
+            {icon:'⚖️', name:'ارائه در دادگاه', desc:'ارائه گزارش در دادگاه'}
+        ]
+    },
+    export: {
+        name: 'صادرات و واردات',
+        icon: '🌍',
+        files: [
+            {icon:'💱', name:'کد ارزی', desc:'دریافت کد ارزی'},
+            {icon:'🌐', name:'کشور مقصد', desc:'استعلام کشور مقصد'},
+            {icon:'📦', name:'صادرات ملک', desc:'صادرات ملک به خارج'},
+            {icon:'📥', name:'واردات ملک', desc:'واردات ملک از خارج'},
+            {icon:'📋', name:'مجوز صادرات', desc:'دریافت مجوز صادرات'},
+            {icon:'📄', name:'مجوز واردات', desc:'دریافت مجوز واردات'},
+            {icon:'🚢', name:'حمل و نقل', desc:'ترتیب حمل و نقل بین‌المللی'},
+            {icon:'🛡️', name:'بیمه بین‌المللی', desc:'بیمه محموله بین‌المللی'},
+            {icon:'💵', name:'تسویه ارزی', desc:'تسویه ارزی معامله'},
+            {icon:'📊', name:'گزارش ارزی', desc:'گزارش تراکنش ارزی'}
+        ]
+    }
+};
+
+// ==================== تولید پنل‌ها ====================
+function renderPanels() {
+    const container = document.getElementById('panelsContainer');
+    container.innerHTML = '';
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedOrg = urlParams.get('org');
+    
+    Object.keys(orgs).forEach(key => {
+        if (selectedOrg && selectedOrg !== key) return;
+        const org = orgs[key];
+        const panel = document.createElement('div');
+        panel.className = 'org-panel';
+        panel.innerHTML = `<h2>${org.icon} ${org.name}</h2><div class="file-grid" id="grid-${key}"></div>`;
+        container.appendChild(panel);
+        
+        const grid = document.getElementById(`grid-${key}`);
+        org.files.forEach(file => {
+            const card = document.createElement('div');
+            card.className = 'file-card';
+            card.innerHTML = `<span class="f-icon">${file.icon}</span><h4>${file.name}</h4><p>${file.desc}</p><span class="file-status">فعال</span>`;
+            card.onclick = () => showToast(`📁 پرونده «${file.name}» باز شد`, '#10b981');
+            grid.appendChild(card);
+        });
+    });
+}
+
+function showToast(msg, color = '#1a2332') {
+    const t = document.getElementById('toast');
+    t.style.background = color; t.textContent = msg; t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+}
+
+window.addEventListener('load', renderPanels);
+</script>
+</body>
+</html>
