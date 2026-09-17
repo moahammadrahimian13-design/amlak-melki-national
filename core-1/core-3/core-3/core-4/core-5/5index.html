@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نقشه و GPS | پروژه ملی املاک ملکی</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+:root{--primary:#0f2c5c;--secondary:#2c7be5;--accent:#f5a623;--green:#10b981;--red:#ef4444;--dark:#1a2332;--light:#f4f7fb;--white:#fff;--text:#2d3748;--gray:#718096;--border:#e2e8f0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--light);color:var(--text);direction:rtl;line-height:1.7;}
+.top-bar{background:var(--primary);color:#cbd5e0;font-size:12px;padding:10px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:5px;}
+.back-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 16px;border-radius:8px;text-decoration:none;font-size:12px;}
+.hero{background:linear-gradient(135deg,#0f2c5c,#1e4a8a);color:#fff;padding:50px 5% 40px;text-align:center;}
+.hero-icon{width:70px;height:70px;background:rgba(255,255,255,.15);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 18px;border:2px solid rgba(255,255,255,.3);}
+.hero h1{font-size:24px;font-weight:900;margin-bottom:10px;}
+.hero p{font-size:14px;opacity:.9;}
+.container{max-width:1250px;margin:0 auto;padding:35px 5%;}
+.gis-container{background:#fff;border-radius:20px;padding:25px;box-shadow:0 8px 30px rgba(0,0,0,.08);}
+.gis-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.gis-controls select,.gis-controls button{padding:12px 18px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:bold;cursor:pointer;border:2px solid #e2e8f0;}
+.gis-controls select{flex:1;min-width:180px;background:#f4f7fb;}
+.gps-btn{background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;}
+.earth-btn{background:linear-gradient(135deg,#3b82f6,#1e4a8a);color:#fff;border:none;}
+.asal-btn{background:linear-gradient(135deg,#ec4899,#db2777);color:#fff;border:none;}
+.map-container{height:450px;border-radius:16px;overflow:hidden;margin-bottom:15px;box-shadow:0 4px 15px rgba(0,0,0,.1);}
+.gps-info{background:#eff6ff;border-right:4px solid #2c7be5;padding:15px;border-radius:10px;font-size:13px;color:#0f2c5c;text-align:center;}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin-top:20px;}
+.feature-card{background:var(--light);border-radius:12px;padding:18px;text-align:center;border-top:3px solid var(--secondary);}
+.feature-card .f-icon{font-size:28px;margin-bottom:8px;display:block;}
+.feature-card h4{color:var(--primary);font-size:14px;margin-bottom:5px;font-weight:700;}
+.feature-card p{color:var(--gray);font-size:12px;}
+.toast{position:fixed;top:25px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:14px 28px;border-radius:10px;z-index:2000;display:none;font-size:14px;}
+footer{background:var(--dark);color:#a0aec0;padding:30px 5%;text-align:center;font-size:13px;margin-top:40px;}
+footer .manager{color:var(--accent);font-weight:bold;}
+@media(max-width:600px){.map-container{height:320px;}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+<span>🗺️ نقشه، GPS و مسیریابی | پروژه ملی املاک ملکی</span>
+<a href="../core-1/index.html" class="back-btn">← بازگشت به صفحه اصلی</a>
+</div>
+
+<div class="hero">
+<div class="hero-icon">🗺️</div>
+<h1>نقشه، GPS و مسیریابی</h1>
+<p>پروژه ملی املاک ملکی | AMLAK.malaki | مدیرعامل: محمد رحیمیان ملکی</p>
+</div>
+
+<div class="container">
+<div class="gis-container">
+<div class="gis-controls">
+<select id="provinceSelect" onchange="loadProvince()">
+<option value="">-- انتخاب استان --</option>
+<option value="tehran">تهران</option>
+<option value="isfahan">اصفهان</option>
+<option value="fars">فارس</option>
+<option value="khorasan-razavi">خراسان رضوی</option>
+<option value="azerbaijan-sharghi">آذربایجان شرقی</option>
+<option value="azerbaijan-gharbi">آذربایجان غربی</option>
+<option value="khuzestan">خوزستان</option>
+<option value="mazandaran">مازندران</option>
+<option value="gilan">گیلان</option>
+<option value="kerman">کرمان</option>
+<option value="alborz">البرز</option>
+<option value="qom">قم</option>
+<option value="yazd">یزد</option>
+<option value="hormozgan">هرمزگان</option>
+<option value="sistan">سیستان و بلوچستان</option>
+<option value="kermanshah">کرمانشاه</option>
+<option value="golestan">گلستان</option>
+<option value="ardabil">اردبیل</option>
+<option value="hamedan">همدان</option>
+<option value="lorestan">لرستان</option>
+<option value="markazi">مرکزی</option>
+<option value="qazvin">قزوین</option>
+<option value="zanjan">زنجان</option>
+<option value="semnan">سمنان</option>
+<option value="bushehr">بوشهر</option>
+<option value="chaharmahal">چهارمحال و بختیاری</option>
+<option value="kurdistan">کردستان</option>
+<option value="kohgiluyeh">کهگیلویه و بویراحمد</option>
+<option value="ilam">ایلام</option>
+<option value="khorasan-shomali">خراسان شمالی</option>
+<option value="khorasan-jonobi">خراسان جنوبی</option>
+</select>
+<button onclick="getGPS()" class="gps-btn">📍 موقعیت من</button>
+<button onclick="openGoogleEarth()" class="earth-btn">🌍 گوگل ارث</button>
+<button onclick="speakAsal()" class="asal-btn">👧 عسل راهنمایی کن</button>
+</div>
+<div id="map" class="map-container"></div>
+<div id="gps-info" class="gps-info">📍 برای دریافت موقعیت، روی دکمه «موقعیت من» کلیک کنید.</div>
+
+<div class="features-grid">
+<div class="feature-card"><span class="f-icon">⛽</span><h4>پمپ بنزین</h4><p>نزدیک‌ترین پمپ‌های سوخت</p></div>
+<div class="feature-card"><span class="f-icon">🍽️</span><h4>رستوران</h4><p>غذاخوری‌های بین راهی</p></div>
+<div class="feature-card"><span class="f-icon">🏥</span><h4>بیمارستان</h4><p>مراکز درمانی و اورژانس</p></div>
+<div class="feature-card"><span class="f-icon">🅿️</span><h4>استراحت‌گاه</h4><p>استراحت‌گاه‌های بین راهی</p></div>
+<div class="feature-card"><span class="f-icon">📸</span><h4>دوربین سرعت</h4><p>کنترل سرعت در جاده‌ها</p></div>
+<div class="feature-card"><span class="f-icon">🚻</span><h4>سرویس بهداشتی</h4><p>سرویس‌های بین راهی</p></div>
+<div class="feature-card"><span class="f-icon">🔧</span><h4>تعمیرگاه</h4><p>تعمیرگاه‌های خودرو</p></div>
+<div class="feature-card"><span class="f-icon">🏞️</span><h4>منابع طبیعی</h4><p>مراتع و جنگل‌ها</p></div>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+© ۱۴۰۳ - پروژه ملی املاک ملکی | AMLAK.malaki | مدیرعامل: <span class="manager">محمد رحیمیان ملکی</span>
+</footer>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let map;
+let currentMarker;
+const provinceCoords = {
+    'tehran': [35.6892, 51.3890], 'isfahan': [32.6546, 51.6680], 'fars': [29.5918, 52.5837],
+    'khorasan-razavi': [36.2605, 59.6168], 'azerbaijan-sharghi': [38.0800, 46.2919],
+    'azerbaijan-gharbi': [37.5527, 45.0761], 'khuzestan': [31.3183, 48.6706],
+    'mazandaran': [36.5659, 53.0596], 'gilan': [37.2808, 49.5832], 'kerman': [30.2839, 57.0834],
+    'alborz': [35.8400, 50.9391], 'qom': [34.6416, 50.8746], 'yazd': [31.8974, 54.3569],
+    'hormozgan': [27.1832, 56.2666], 'sistan': [29.4963, 60.8629], 'kermanshah': [34.3142, 47.0650],
+    'golestan': [36.8456, 54.4393], 'ardabil': [38.2498, 48.2933], 'hamedan': [34.7983, 48.5148],
+    'lorestan': [33.4878, 48.3558], 'markazi': [34.0917, 49.6892], 'qazvin': [36.2688, 50.0041],
+    'zanjan': [36.6769, 48.4963], 'semnan': [35.5729, 53.3971], 'bushehr': [28.9236, 50.8200],
+    'chaharmahal': [32.3256, 50.8644], 'kurdistan': [35.3219, 46.9862], 'kohgiluyeh': [30.6667, 51.6000],
+    'ilam': [33.6374, 46.4227], 'khorasan-shomali': [37.4710, 57.3300], 'khorasan-jonobi': [32.8663, 59.2211]
+};
+
+function initMap(){
+    if(map) return;
+    map = L.map('map').setView([32.4279, 53.6880], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap', maxZoom: 19
+    }).addTo(map);
+}
+
+function loadProvince(){
+    const select = document.getElementById('provinceSelect');
+    const province = select.value;
+    if(!province) return;
+    initMap();
+    const coords = provinceCoords[province];
+    if(coords){
+        map.setView(coords, 9);
+        if(currentMarker) map.removeLayer(currentMarker);
+        currentMarker = L.marker(coords).addTo(map).bindPopup(`استان: ${select.options[select.selectedIndex].text}`).openPopup();
+        document.getElementById('gps-info').textContent = `📍 موقعیت استان ${select.options[select.selectedIndex].text} بارگذاری شد.`;
+        speakAsal(`استان ${select.options[select.selectedIndex].text} انتخاب شد.`);
+    }
+}
+
+function getGPS(){
+    if(!navigator.geolocation){ showToast('مرورگر شما از GPS پشتیبانی نمی‌کند', '#ef4444'); return; }
+    document.getElementById('gps-info').textContent = '📍 در حال دریافت موقعیت...';
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude, lng = position.coords.longitude;
+            initMap(); map.setView([lat, lng], 14);
+            if(currentMarker) map.removeLayer(currentMarker);
+            currentMarker = L.marker([lat, lng]).addTo(map).bindPopup(`موقعیت شما<br>Lat: ${lat.toFixed(4)}<br>Lng: ${lng.toFixed(4)}`).openPopup();
+            document.getElementById('gps-info').innerHTML = `📍 موقعیت شما: عرض ${lat.toFixed(4)} | طول ${lng.toFixed(4)}<br><a href="https://www.google.com/maps?q=${lat},${lng}" target="_blank" style="color:#2c7be5;">مشاهده در گوگل مپس</a>`;
+            speakAsal('موقعیت شما با موفقیت دریافت شد.');
+        },
+        (error) => { document.getElementById('gps-info').textContent = '❌ خطا در دریافت موقعیت'; }
+    );
+}
+
+function openGoogleEarth(){
+    const center = map ? map.getCenter() : {lat: 32.4279, lng: 53.6880};
+    window.open(`https://earth.google.com/web/@${center.lat},${center.lng},1000a,1000d,35y,0h,0t,0r`, '_blank');
+}
+
+function speakAsal(text) {
+    if (!text) text = 'سلام! من عسل هستم، دستیار شما در بخش نقشه و مسیریابی.';
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'fa-IR'; utterance.rate = 0.9; utterance.pitch = 1.3;
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+function showToast(msg, color = '#1a2332') {
+    const t = document.getElementById('toast');
+    t.style.background = color; t.textContent = msg; t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+}
+
+window.addEventListener('load', () => {
+    setTimeout(initMap, 500);
+    setTimeout(() => speakAsal('سلام! من عسل هستم. به بخش نقشه و مسیریابی خوش آمدید!'), 2000);
+});
+</script>
+</body>
+  </html>
