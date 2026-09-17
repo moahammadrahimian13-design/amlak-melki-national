@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سیستم نوبت‌دهی | پروژه ملی املاک ملکی</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{--primary:#0f2c5c;--secondary:#2c7be5;--accent:#f5a623;--green:#10b981;--red:#ef4444;--dark:#1a2332;--light:#f4f7fb;--white:#fff;--text:#2d3748;--gray:#718096;--border:#e2e8f0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--light);color:var(--text);direction:rtl;line-height:1.7;}
+.top-bar{background:var(--primary);color:#cbd5e0;font-size:12px;padding:10px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:5px;}
+.back-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:6px 16px;border-radius:8px;text-decoration:none;font-size:12px;}
+.hero{background:linear-gradient(135deg,#0f2c5c,#1e4a8a);color:#fff;padding:50px 5% 40px;text-align:center;}
+.hero-icon{width:70px;height:70px;background:rgba(255,255,255,.15);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 18px;border:2px solid rgba(255,255,255,.3);}
+.hero h1{font-size:24px;font-weight:900;margin-bottom:10px;}
+.hero p{font-size:14px;opacity:.9;}
+.container{max-width:900px;margin:0 auto;padding:35px 5%;}
+.steps{display:flex;justify-content:center;gap:10px;margin-bottom:30px;flex-wrap:wrap;}
+.step{display:flex;align-items:center;gap:8px;padding:8px 16px;background:#fff;border-radius:25px;font-size:12px;border:2px solid var(--border);}
+.step.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--text);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;}
+.step.active .step-num{background:#fff;color:var(--primary);}
+.card{background:#fff;border-radius:20px;padding:30px;box-shadow:0 8px 30px rgba(0,0,0,.08);}
+.card h2{color:var(--primary);font-size:18px;margin-bottom:20px;font-weight:800;text-align:center;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px;color:var(--text);}
+.form-group select,.form-group input{width:100%;padding:13px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;background:var(--light);}
+.org-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px;}
+.org-item{background:var(--light);border:2px solid var(--border);border-radius:12px;padding:15px;text-align:center;cursor:pointer;transition:.3s;}
+.org-item:hover{border-color:var(--secondary);transform:translateY(-3px);}
+.org-item.selected{background:var(--primary);color:#fff;border-color:var(--primary);}
+.org-item .org-icon{font-size:28px;margin-bottom:8px;display:block;}
+.org-item h4{font-size:13px;font-weight:700;}
+.expert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:20px;}
+.expert-card{background:var(--light);border:2px solid var(--border);border-radius:12px;padding:15px;cursor:pointer;transition:.3s;}
+.expert-card:hover{border-color:var(--secondary);}
+.expert-card.selected{background:var(--primary);color:#fff;border-color:var(--primary);}
+.expert-card h4{font-size:14px;margin-bottom:5px;font-weight:700;}
+.expert-card p{font-size:12px;opacity:.8;}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px;}
+.cal-header{text-align:center;font-size:12px;font-weight:bold;color:var(--primary);padding:8px 0;}
+.cal-day{text-align:center;padding:10px 5px;border-radius:8px;font-size:13px;cursor:pointer;border:2px solid transparent;}
+.cal-day:hover{background:var(--light);}
+.cal-day.selected{background:var(--primary);color:#fff;}
+.cal-day.holiday{background:#fef2f2;color:var(--red);cursor:not-allowed;}
+.time-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:20px;}
+.time-slot{padding:12px;text-align:center;background:var(--light);border:2px solid var(--border);border-radius:10px;cursor:pointer;font-size:13px;}
+.time-slot:hover{border-color:var(--secondary);}
+.time-slot.selected{background:var(--primary);color:#fff;border-color:var(--primary);}
+.time-slot.disabled{background:#f3f4f6;color:#9ca3af;cursor:not-allowed;text-decoration:line-through;}
+.btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;padding:14px;border-radius:10px;font-family:inherit;font-weight:bold;font-size:15px;cursor:pointer;width:100%;transition:.3s;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(44,123,229,.3);}
+.summary{background:linear-gradient(135deg,#ecfdf5,#fff);border:2px solid var(--green);border-radius:16px;padding:25px;margin-top:20px;}
+.summary h3{color:var(--green);font-size:16px;margin-bottom:15px;font-weight:800;}
+.summary-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e2e8f0;font-size:14px;}
+.summary-row .label{color:var(--gray);}
+.summary-row .value{color:var(--primary);font-weight:bold;}
+.tracking-code{background:var(--primary);color:#fff;padding:15px;border-radius:12px;text-align:center;margin-top:15px;font-size:18px;font-weight:900;letter-spacing:2px;}
+.toast{position:fixed;top:25px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:14px 28px;border-radius:10px;z-index:2000;display:none;font-size:14px;}
+footer{background:var(--dark);color:#a0aec0;padding:30px 5%;text-align:center;font-size:13px;margin-top:40px;}
+footer .manager{color:var(--accent);font-weight:bold;}
+@media(max-width:600px){.card{padding:20px;}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+<span>📅 سیستم نوبت‌دهی جامع | پروژه ملی املاک ملکی</span>
+<a href="../core-1/index.html" class="back-btn">← بازگشت</a>
+</div>
+
+<div class="hero">
+<div class="hero-icon">📅</div>
+<h1>سیستم نوبت‌دهی جامع</h1>
+<p>پروژه ملی املاک ملکی | AMLAK.malaki | مدیرعامل: محمد رحیمیان ملکی</p>
+</div>
+
+<div class="container">
+<div class="steps">
+<div class="step active" id="step1"><span class="step-num">۱</span> انتخاب اداره</div>
+<div class="step" id="step2"><span class="step-num">۲</span> کارشناس</div>
+<div class="step" id="step3"><span class="step-num">۳</span> تاریخ و ساعت</div>
+<div class="step" id="step4"><span class="step-num">۴</span> تایید نهایی</div>
+</div>
+
+<div class="card" id="stage1">
+<h2>۱. انتخاب اداره مورد نظر</h2>
+<div class="org-grid" id="orgGrid">
+<div class="org-item" onclick="selectOrg('nezam','نظام مهندسی')"><span class="org-icon">📋</span><h4>نظام مهندسی</h4></div>
+<div class="org-item" onclick="selectOrg('sabt','ثبت اسناد')"><span class="org-icon">📜</span><h4>ثبت اسناد</h4></div>
+<div class="org-item" onclick="selectOrg('darayi','دارایی و مالیات')"><span class="org-icon">💰</span><h4>دارایی و مالیات</h4></div>
+<div class="org-item" onclick="selectOrg('shahrdari','شهرداری')"><span class="org-icon">🏛️</span><h4>شهرداری</h4></div>
+<div class="org-item" onclick="selectOrg('ahval','ثبت احوال')"><span class="org-icon">🆔</span><h4>ثبت احوال</h4></div>
+<div class="org-item" onclick="selectOrg('kadaster','کاداستر')"><span class="org-icon">🗺️</span><h4>کاداستر</h4></div>
+<div class="org-item" onclick="selectOrg('ghave','قوه قضاییه')"><span class="org-icon">⚖️</span><h4>قوه قضاییه</h4></div>
+<div class="org-item" onclick="selectOrg('daftar','دفاتر خدمات قضایی')"><span class="org-icon">📝</span><h4>دفاتر قضایی</h4></div>
+<div class="org-item" onclick="selectOrg('karshenas','کارشناسان قضایی')"><span class="org-icon">👨‍⚖️</span><h4>کارشناسان قضایی</h4></div>
+<div class="org-item" onclick="selectOrg('export','صادرات و واردات')"><span class="org-icon">🌍</span><h4>صادرات و واردات</h4></div>
+</div>
+</div>
+
+<div class="card" id="stage2" style="display:none;">
+<h2>۲. انتخاب کارشناس</h2>
+<div class="expert-grid" id="expertGrid"></div>
+<button class="btn" onclick="goToStep3()">ادامه →</button>
+</div>
+
+<div class="card" id="stage3" style="display:none;">
+<h2>۳. انتخاب تاریخ و ساعت</h2>
+<div class="form-group">
+<label>ماه و سال</label>
+<select id="monthSelect" onchange="renderCalendar()">
+<option value="1403-01">فروردین ۱۴۰۳</option>
+<option value="1403-02">اردیبهشت ۱۴۰۳</option>
+<option value="1403-03">خرداد ۱۴۰۳</option>
+<option value="1403-04">تیر ۱۴۰۳</option>
+<option value="1403-05">مرداد ۱۴۰۳</option>
+<option value="1403-06">شهریور ۱۴۰۳</option>
+<option value="1403-07">مهر ۱۴۰۳</option>
+<option value="1403-08">آبان ۱۴۰۳</option>
+<option value="1403-09">آذر ۱۴۰۳</option>
+<option value="1403-10">دی ۱۴۰۳</option>
+<option value="1403-11">بهمن ۱۴۰۳</option>
+<option value="1403-12">اسفند ۱۴۰۳</option>
+</select>
+</div>
+<div class="calendar" id="calendar"></div>
+<div class="form-group"><label>انتخاب ساعت</label></div>
+<div class="time-grid" id="timeGrid">
+<div class="time-slot" onclick="selectTime('8:00')">۸:۰۰</div>
+<div class="time-slot" onclick="selectTime('9:00')">۹:۰۰</div>
+<div class="time-slot" onclick="selectTime('10:00')">۱۰:۰۰</div>
+<div class="time-slot" onclick="selectTime('11:00')">۱۱:۰۰</div>
+<div class="time-slot" onclick="selectTime('12:00')">۱۲:۰۰</div>
+<div class="time-slot" onclick="selectTime('14:00')">۱۴:۰۰</div>
+<div class="time-slot" onclick="selectTime('15:00')">۱۵:۰۰</div>
+<div class="time-slot" onclick="selectTime('16:00')">۱۶:۰۰</div>
+</div>
+<button class="btn" onclick="goToStep4()">ادامه →</button>
+</div>
+
+<div class="card" id="stage4" style="display:none;">
+<h2>۴. تایید نهایی</h2>
+<div class="form-group"><label>نام و نام خانوادگی *</label><input type="text" id="fullName" placeholder="مثال: محمد رحیمیان"></div>
+<div class="form-group"><label>کد ملی *</label><input type="text" id="nationalCode" placeholder="۱۰ رقم" maxlength="10"></div>
+<div class="form-group"><label>شماره موبایل *</label><input type="tel" id="phone" placeholder="۰۹۱۲۳۴۵۶۷۸۹"></div>
+<button class="btn" onclick="confirmAppointment()">✅ تایید و دریافت شماره نوبت</button>
+<div class="summary" id="summary" style="display:none;">
+<h3>✅ نوبت شما با موفقیت ثبت شد</h3>
+<div class="summary-row"><span class="label">اداره:</span><span class="value" id="sumOrg"></span></div>
+<div class="summary-row"><span class="label">کارشناس:</span><span class="value" id="sumExpert"></span></div>
+<div class="summary-row"><span class="label">تاریخ:</span><span class="value" id="sumDate"></span></div>
+<div class="summary-row"><span class="label">ساعت:</span><span class="value" id="sumTime"></span></div>
+<div class="tracking-code" id="trackingCode"></div>
+<p style="text-align:center;margin-top:15px;font-size:13px;color:var(--gray);">📱 پیامک تایید به شماره موبایل شما ارسال شد.</p>
+</div>
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+© ۱۴۰۳ - پروژه ملی املاک ملکی | AMLAK.malaki | مدیرعامل: <span class="manager">محمد رحیمیان ملکی</span>
+</footer>
+
+<script>
+const orgData = {
+    nezam: { name: 'نظام مهندسی', code: 'NZM', experts: [{name:'مهندس احمدی', spec:'پروانه ساخت'},{name:'مهندس رضایی', spec:'پایان کار'}]},
+    sabt: { name: 'ثبت اسناد', code: 'SBT', experts: [{name:'آقای کریمی', spec:'سند تک‌برگ'},{name:'خانم حسینی', spec:'بازداشتی'}]},
+    darayi: { name: 'دارایی و مالیات', code: 'DRY', experts: [{name:'آقای صادقی', spec:'مفاصاحساب'}]},
+    shahrdari: { name: 'شهرداری', code: 'SHR', experts: [{name:'آقای رحیمی', spec:'عوارض'}]},
+    ahval: { name: 'ثبت احوال', code: 'AHV', experts: [{name:'آقای محمدی', spec:'احراز هویت'}]},
+    kadaster: { name: 'کاداستر', code: 'KDS', experts: [{name:'مهندس تهرانی', spec:'نقشه‌برداری'}]},
+    ghave: { name: 'قوه قضاییه', code: 'GHV', experts: [{name:'قاضی مرادی', spec:'حقوقی'}]},
+    daftar: { name: 'دفاتر خدمات قضایی', code: 'DFT', experts: [{name:'آقای اکبری', spec:'مشاوره حقوقی'}]},
+    karshenas: { name: 'کارشناسان قضایی', code: 'KRS', experts: [{name:'مهندس سلیمی', spec:'ارزیابی ملک'}]},
+    export: { name: 'صادرات و واردات', code: 'EXP', experts: [{name:'آقای بی‌نیاز', spec:'مشاوره ارزی'}]}
+};
+
+const holidays = ['1403-01-01','1403-01-02','1403-01-03','1403-01-04','1403-01-12','1403-01-13','1403-02-02','1403-02-03','1403-03-15','1403-04-10','1403-04-18','1403-04-26','1403-04-27','1403-05-04','1403-05-12','1403-05-14','1403-05-21','1403-05-30','1403-08-13','1403-10-15','1403-10-27','1403-11-22','1403-12-29'];
+
+let selectedOrg = '', selectedOrgName = '', selectedExpert = '', selectedDate = '', selectedTime = '';
+
+function showToast(msg, color = '#1a2332') {
+    const t = document.getElementById('toast');
+    t.style.background = color; t.textContent = msg; t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function selectOrg(code, name) {
+    selectedOrg = code; selectedOrgName = name;
+    document.querySelectorAll('.org-item').forEach(el => el.classList.remove('selected'));
+    event.target.closest('.org-item').classList.add('selected');
+    renderExperts();
+    document.getElementById('stage1').style.display = 'none';
+    document.getElementById('stage2').style.display = 'block';
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step2').classList.add('active');
+}
+
+function renderExperts() {
+    const grid = document.getElementById('expertGrid');
+    grid.innerHTML = '';
+    orgData[selectedOrg].experts.forEach(ex => {
+        const div = document.createElement('div');
+        div.className = 'expert-card';
+        div.innerHTML = `<h4>${ex.name}</h4><p>${ex.spec}</p>`;
+        div.onclick = () => {
+            selectedExpert = ex.name;
+            document.querySelectorAll('.expert-card').forEach(el => el.classList.remove('selected'));
+            div.classList.add('selected');
+        };
+        grid.appendChild(div);
+    });
+}
+
+function goToStep3() {
+    if (!selectedExpert) { showToast('لطفاً یک کارشناس انتخاب کنید', '#ef4444'); return; }
+    document.getElementById('stage2').style.display = 'none';
+    document.getElementById('stage3').style.display = 'block';
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step3').classList.add('active');
+    renderCalendar();
+}
+
+function renderCalendar() {
+    const cal = document.getElementById('calendar');
+    cal.innerHTML = '';
+    const days = ['ش','ی','د','س','چ','پ','ج'];
+    days.forEach(d => {
+        const el = document.createElement('div');
+        el.className = 'cal-header'; el.textContent = d;
+        cal.appendChild(el);
+    });
+    for (let i = 1; i <= 30; i++) {
+        const el = document.createElement('div');
+        el.className = 'cal-day'; el.textContent = i;
+        const dateStr = `${document.getElementById('monthSelect').value}-${String(i).padStart(2,'0')}`;
+        if (holidays.includes(dateStr)) {
+            el.classList.add('holiday'); el.title = 'تعطیل رسمی';
+        } else {
+            el.onclick = () => {
+                selectedDate = dateStr;
+                document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected'));
+                el.classList.add('selected');
+            };
+        }
+        cal.appendChild(el);
+    }
+}
+
+function selectTime(time) {
+    selectedTime = time;
+    document.querySelectorAll('.time-slot').forEach(el => el.classList.remove('selected'));
+    event.target.classList.add('selected');
+}
+
+function goToStep4() {
+    if (!selectedDate) { showToast('لطفاً تاریخ را انتخاب کنید', '#ef4444'); return; }
+    if (!selectedTime) { showToast('لطفاً ساعت را انتخاب کنید', '#ef4444'); return; }
+    document.getElementById('stage3').style.display = 'none';
+    document.getElementById('stage4').style.display = 'block';
+    document.getElementById('step3').classList.remove('active');
+    document.getElementById('step4').classList.add('active');
+}
+
+function confirmAppointment() {
+    const name = document.getElementById('fullName').value;
+    const national = document.getElementById('nationalCode').value;
+    const phone = document.getElementById('phone').value;
+    if (!name || !national || !phone) { showToast('لطفاً همه فیلدها را پر کنید', '#ef4444'); return; }
+    if (national.length !== 10) { showToast('کد ملی باید ۱۰ رقم باشد', '#ef4444'); return; }
+    
+    const code = orgData[selectedOrg].code;
+    const year = selectedDate.split('-')[0];
+    const random = Math.floor(Math.random() * 9000) + 1000;
+    const trackingCode = `${code}-${year}-${random}`;
+    
+    document.getElementById('sumOrg').textContent = selectedOrgName;
+    document.getElementById('sumExpert').textContent = selectedExpert;
+    document.getElementById('sumDate').textContent = selectedDate;
+    document.getElementById('sumTime').textContent = selectedTime;
+    document.getElementById('trackingCode').textContent = 'کد نوبت: ' + trackingCode;
+    document.getElementById('summary').style.display = 'block';
+    
+    setTimeout(() => showToast('📱 پیامک تایید به شماره ' + phone + ' ارسال شد', '#10b981'), 500);
+    setTimeout(() => speakAsal(`نوبت شما در ${selectedOrgName} با کارشناس ${selectedExpert} در تاریخ ${selectedDate} ساعت ${selectedTime} ثبت شد. کد نوبت شما ${trackingCode} است.`), 1500);
+}
+
+function speakAsal(text) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'fa-IR'; utterance.rate = 0.9; utterance.pitch = 1.3;
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+window.addEventListener('load', () => { renderCalendar(); });
+</script>
+</body>
+  </html>
