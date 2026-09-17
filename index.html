@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پلتفرم ملی املاک ملکی | سامانه یکپارچه استعلام</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{--primary:#0f2c5c;--primary-light:#1e4a8a;--secondary:#2c7be5;--accent:#f5a623;--green:#10b981;--red:#ef4444;--dark:#1a2332;--light:#f4f7fb;--white:#fff;--text:#2d3748;--gray:#718096;--border:#e2e8f0;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--light);color:var(--text);direction:rtl;line-height:1.7;}
+
+/* نوار بالایی */
+.top-bar{background:var(--primary);color:#cbd5e0;font-size:12px;padding:8px 5%;display:flex;justify-content:space-between;align-items:center;}
+.top-bar span{display:flex;align-items:center;gap:6px;}
+
+/* هدر */
+header{background:var(--white);box-shadow:0 2px 12px rgba(0,0,0,.06);position:sticky;top:0;z-index:100;padding:14px 5%;display:flex;justify-content:space-between;align-items:center;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;}
+.logo-text h1{font-size:17px;color:var(--primary);font-weight:800;}
+.logo-text p{font-size:11px;color:var(--gray);}
+nav ul{display:flex;list-style:none;gap:22px;}
+nav a{text-decoration:none;color:var(--text);font-weight:500;font-size:14px;transition:.3s;}
+nav a:hover{color:var(--secondary);}
+.btn-login{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;padding:10px 22px;border-radius:8px;border:none;font-family:inherit;font-size:13px;font-weight:bold;cursor:pointer;}
+
+/* هیرو */
+.hero{position:relative;background:linear-gradient(135deg,rgba(15,44,92,.95),rgba(30,74,138,.9)),url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600') center/cover;color:#fff;padding:90px 5% 70px;text-align:center;}
+.hero-badge{display:inline-block;background:rgba(245,166,35,.2);color:var(--accent);padding:6px 18px;border-radius:20px;font-size:13px;font-weight:bold;margin-bottom:20px;border:1px solid rgba(245,166,35,.4);}
+.hero h1{font-size:40px;margin-bottom:18px;font-weight:900;line-height:1.4;}
+.hero h1 span{color:var(--accent);}
+.hero p{font-size:16px;margin-bottom:35px;opacity:.9;}
+.search-box{background:var(--white);padding:12px;border-radius:14px;max-width:800px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;box-shadow:0 15px 40px rgba(0,0,0,.25);}
+.search-box input,.search-box select{flex:1;min-width:140px;padding:14px;border:1px solid var(--border);border-radius:10px;font-family:inherit;font-size:14px;}
+.search-box button{background:var(--accent);color:#fff;border:none;padding:14px 32px;border-radius:10px;cursor:pointer;font-weight:bold;font-family:inherit;font-size:14px;}
+.mic-btn{background:var(--green);padding:14px 18px;font-size:18px;}
+
+/* آمار */
+.stats{background:var(--white);padding:35px 5%;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;max-width:1200px;margin:-30px auto 0;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.08);position:relative;z-index:10;}
+.stat{text-align:center;padding:10px;}
+.stat .num{font-size:28px;font-weight:900;color:var(--primary);}
+.stat .label{font-size:13px;color:var(--gray);margin-top:5px;}
+
+/* بخش‌ها */
+.section{padding:70px 5%;max-width:1250px;margin:0 auto;}
+.section-header{text-align:center;margin-bottom:45px;}
+.section-header h2{font-size:28px;color:var(--primary);font-weight:800;margin-bottom:10px;}
+.section-header .line{width:80px;height:4px;background:linear-gradient(90deg,var(--secondary),var(--accent));margin:0 auto 15px;border-radius:2px;}
+.section-header p{color:var(--gray);font-size:15px;}
+
+/* ===== کادرهای مربع بزرگ با طراحی متفاوت ===== */
+.admin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px;}
+
+.admin-card{
+    position:relative;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
+    transition:.4s;
+    cursor:pointer;
+    height:340px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+}
+.admin-card:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 20px 50px rgba(15,44,92,.3);}
+
+.admin-img{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    z-index:1;
+    transition:.4s;
+}
+.admin-card:hover .admin-img{transform:scale(1.1);}
+
+.admin-overlay{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    background:linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.4) 50%, transparent 100%);
+}
+/* رنگ‌بندی متفاوت برای هر اداره */
+.admin-card[data-type="nezam"] .admin-overlay{background:linear-gradient(to top, rgba(15,44,92,.9), rgba(44,123,229,.3));}
+.admin-card[data-type="sabt"] .admin-overlay{background:linear-gradient(to top, rgba(16,185,129,.9), rgba(16,185,129,.2));}
+.admin-card[data-type="darayi"] .admin-overlay{background:linear-gradient(to top, rgba(245,166,35,.9), rgba(245,166,35,.2));}
+.admin-card[data-type="shahrdari"] .admin-overlay{background:linear-gradient(to top, rgba(139,92,246,.9), rgba(139,92,246,.2));}
+.admin-card[data-type="sabtAhval"] .admin-overlay{background:linear-gradient(to top, rgba(236,72,153,.9), rgba(236,72,153,.2));}
+.admin-card[data-type="kadaster"] .admin-overlay{background:linear-gradient(to top, rgba(20,184,166,.9), rgba(20,184,166,.2));}
+.admin-card[data-type="ghave"] .admin-overlay{background:linear-gradient(to top, rgba(239,68,68,.9), rgba(239,68,68,.2));}
+.admin-card[data-type="export"] .admin-overlay{background:linear-gradient(to top, rgba(59,130,246,.9), rgba(59,130,246,.2));}
+
+.admin-icon{
+    position:absolute;
+    top:20px;
+    right:20px;
+    z-index:3;
+    width:70px;
+    height:70px;
+    background:rgba(255,255,255,.95);
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:34px;
+    box-shadow:0 8px 25px rgba(0,0,0,.3);
+    transition:.4s;
+}
+.admin-card:hover .admin-icon{transform:scale(1.15) rotate(8deg);}
+
+.admin-content{
+    position:relative;
+    z-index:3;
+    padding:22px;
+    color:#fff;
+    text-align:right;
+}
+.admin-content h4{font-size:20px;margin-bottom:8px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6);}
+.admin-content p{font-size:13px;line-height:1.7;opacity:.95;text-shadow:0 1px 4px rgba(0,0,0,.6);margin-bottom:12px;}
+
+.admin-prereq{
+    display:inline-block;
+    background:rgba(255,255,255,.2);
+    backdrop-filter:blur(5px);
+    color:#fff;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:11px;
+    margin:3px 2px;
+    border:1px solid rgba(255,255,255,.3);
+}
+.admin-status{
+    display:inline-block;
+    background:var(--green);
+    color:#fff;
+    padding:4px 14px;
+    border-radius:20px;
+    font-size:11px;
+    margin-top:10px;
+    font-weight:bold;
+    box-shadow:0 3px 10px rgba(16,185,129,.5);
+}
+
+/* فناوری */
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;}
+.tech-card{background:var(--white);border-radius:16px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,.06);border-right:4px solid var(--secondary);transition:.3s;}
+.tech-card:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(0,0,0,.12);}
+.tech-card .t-icon{width:52px;height:52px;background:linear-gradient(135deg,#e0e7ff,#c7d2fe);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:16px;}
+.tech-card h4{color:var(--primary);font-size:16px;margin-bottom:10px;font-weight:700;}
+.tech-card p{color:var(--gray);font-size:13px;line-height:1.8;}
+
+/* املاک */
+.prop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px;}
+.prop-card{background:var(--white);border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:.3s;}
+.prop-card:hover{transform:translateY(-6px);box-shadow:0 15px 35px rgba(0,0,0,.12);}
+.prop-img{height:210px;background-size:cover;background-position:center;position:relative;}
+.prop-badge{position:absolute;top:12px;right:12px;background:var(--accent);color:#fff;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:bold;}
+.prop-body{padding:20px;}
+.prop-body h4{color:var(--primary);font-size:17px;margin-bottom:8px;}
+.prop-body .loc{color:var(--gray);font-size:13px;margin-bottom:14px;}
+.prop-features{display:flex;gap:14px;font-size:12px;color:var(--text);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.prop-price{color:var(--secondary);font-weight:800;font-size:18px;}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;padding:70px 5%;text-align:center;margin-top:50px;position:relative;overflow:hidden;}
+.cta::before{content:'🏛️';position:absolute;font-size:200px;opacity:.05;left:-30px;top:-30px;}
+.cta h3{font-size:28px;margin-bottom:15px;font-weight:800;}
+.cta p{font-size:16px;margin-bottom:30px;opacity:.9;}
+.cta button{background:var(--accent);color:#fff;border:none;padding:15px 40px;border-radius:10px;font-weight:bold;font-family:inherit;font-size:15px;cursor:pointer;margin:5px;transition:.3s;}
+.cta button:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(245,166,35,.4);}
+
+/* چت AI */
+.ai-chat{position:fixed;bottom:25px;left:25px;z-index:999;}
+.ai-toggle{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border:none;width:64px;height:64px;border-radius:50%;font-size:28px;cursor:pointer;box-shadow:0 8px 25px rgba(15,44,92,.4);transition:.3s;}
+.ai-toggle:hover{transform:scale(1.1);}
+.ai-box{display:none;position:absolute;bottom:80px;left:0;width:340px;background:#fff;border-radius:16px;box-shadow:0 15px 50px rgba(0,0,0,.25);overflow:hidden;}
+.ai-box.open{display:block;}
+.ai-header{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;padding:16px;font-weight:bold;display:flex;justify-content:space-between;align-items:center;}
+.ai-body{padding:16px;height:260px;overflow-y:auto;background:#f8fafc;}
+.ai-msg{margin-bottom:10px;padding:10px 14px;border-radius:12px;font-size:13px;max-width:85%;line-height:1.7;}
+.ai-msg.bot{background:#e0e7ff;color:var(--primary);}
+.ai-msg.user{background:var(--primary);color:#fff;margin-right:auto;}
+.ai-input{display:flex;border-top:1px solid var(--border);}
+.ai-input input{flex:1;padding:13px;border:none;font-family:inherit;outline:none;font-size:13px;}
+.ai-input button{background:var(--primary);color:#fff;border:none;padding:13px 22px;cursor:pointer;font-family:inherit;font-weight:bold;}
+
+/* فوتر */
+footer{background:var(--dark);color:#a0aec0;padding:55px 5% 25px;}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:35px;max-width:1250px;margin:0 auto 35px;}
+.footer-grid h5{color:#fff;margin-bottom:18px;font-size:15px;font-weight:700;}
+.footer-grid p,.footer-grid a{color:#a0aec0;font-size:13px;text-decoration:none;display:block;margin-bottom:10px;transition:.3s;}
+.footer-grid a:hover{color:var(--secondary);}
+.copyright{text-align:center;border-top:1px solid #2d3748;padding-top:22px;font-size:12px;color:#718096;}
+
+.toast{position:fixed;top:25px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:14px 28px;border-radius:10px;z-index:2000;display:none;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.3);}
+
+@media(max-width:768px){
+nav ul{display:none;}
+.hero h1{font-size:26px;}
+.search-box{flex-direction:column;}
+.admin-grid{grid-template-columns:1fr;}
+.admin-card{height:300px;}
+.ai-box{width:290px;}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+<span>📞 پشتیبانی: ۰۲۱-۱۲۳۴۵۶۷۸</span>
+<span>🇮🇷 سامانه رسمی جمهوری اسلامی ایران</span>
+</div>
+
+<header>
+<div class="logo">
+<div class="logo-icon">🏛️</div>
+<div class="logo-text"><h1>پلتفرم ملی املاک ملکی</h1><p>سامانه یکپارچه استعلام و خدمات ملکی</p></div>
+</div>
+<nav><ul>
+<li><a href="#services">خدمات اداری</a></li>
+<li><a href="#tech">فناوری‌ها</a></li>
+<li><a href="#properties">آگهی‌ها</a></li>
+<li><a href="#appointment">نوبت‌دهی</a></li>
+</ul></nav>
+<button class="btn-login" onclick="handleLogin()">ورود / ثبت‌نام</button>
+</header>
+
+<section class="hero">
+<div class="hero-badge">🚀 نسخه ۱.۰ | متصل به ۷ اداره دولتی</div>
+<h1>سامانه هوشمند <span>استعلام و معاملات</span> ملکی کشور</h1>
+<p>با اتصال به نظام مهندسی، ثبت اسناد، دارایی، شهرداری، ثبت احوال، کاداستر و قوه قضاییه</p>
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="شهر، منطقه یا آدرس ملک...">
+<select id="dealType"><option value="">نوع معامله</option><option>خرید</option><option>فروش</option><option>اجاره</option></select>
+<select id="propertyType"><option value="">نوع ملک</option><option>آپارتمان</option><option>ویلا</option><option>زمین</option><option>اداری</option></select>
+<button onclick="handleSearch()">🔍 جستجو</button>
+<button class="mic-btn" onclick="handleVoice()" title="جستجوی صوتی">🎤</button>
+</div>
+</section>
+
+<div class="stats">
+<div class="stat"><div class="num">+۱۲۰,۰۰۰</div><div class="label">ملک ثبت شده</div></div>
+<div class="stat"><div class="num">۷</div><div class="label">اداره متصل</div></div>
+<div class="stat"><div class="num">۲۴/۷</div><div class="label">پشتیبانی هوشمند</div></div>
+<div class="stat"><div class="num">۱۰۰٪</div><div class="label">امنیت بلاک‌چین</div></div>
+</div>
+
+<section class="section" id="services">
+<div class="section-header">
+<h2>خدمات اداری و قضایی</h2>
+<div class="line"></div>
+<p>تمامی استعلام‌های قانونی ملک با یک کلیک</p>
+</div>
+<div class="admin-grid">
+
+<div class="admin-card" data-type="nezam" onclick="inquiry('nezamMohandesi')">
+<div class="admin-img" style="background-image:url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600');"></div>
+<div class="admin-overlay"></div>
+<div class="admin-icon">📋</div>
+<div class="admin-content">
+<h4>نظام مهندسی</h4>
+<p>پروانه ساخت، پایان کار و مجوزهای ساختمانی</p>
+<span class="admin-prereq">🔑 پروانه ساخت</span>
+<span class="admin-prereq">📐 متراژ</span>
+<span class="admin-prereq">🏢 طبقات</span><br>
+<span class="admin-status">فعال</span>
+</div>
+</div>
+
+<div class="admin-card" data-type="sabt" onclick="inquiry('sabtAsnad')">
+<div class="admin-img" style="background-image:url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600');"></div>
+<div class="admin-overlay"></div>
+<div class="admin-icon">📜</div>
+<div class="admin-content">
+<h4>ثبت اسناد</h4>
+<p>سند تک‌برگ، بازداشتی، نقل و انتقالات</p>
+<span class="admin-prereq">🔑 شماره سند</span>
+<span class="admin-prereq">👤 کد ملی مالک</span>
+<span class="admin-prereq">📍 کد پستی</span><br>
+<span class="admin-status">فعال</span>
+</div>
+</div>
+
+<div class="admin-card" data-type="darayi" onclick="inquiry('darayi')">
+<div class="admin-img" style="background-image:url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600');"></div>
+<div class="admin-overlay"></div>
+<div class="admin-icon">💰</div>
+<div class="admin-content">
+<h4>دارایی و مالیات</h4>
+<p>بدهی مالیاتی، عوارض، مفاصاحساب</p>
+<span class="admin-prereq">🔑 کد اقتصادی</span>
+<span class="admin-prereq">📋 شماره پرونده</span><br>
+<span class="admin-status">فعال</span>
+</div>
+</div>
+
+<div class="admin-card" data-type="shahrdari" onclick="inquiry('shahrdari')">
+<div class="admin-img" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600');"></div>
+<div class="admin-overlay"></div>
+<div class="admin-icon">🏛️</div>
+<div class="admin-content">
+<h4>شهرداری</h4>
+<p>عوارض، تراکم، تخلفات ساختمانی</p>
+<span class="admin-prereq">📍 کد پستی</span>
+<span class="admin-prereq">📐 متراژ</span>
+<span class="admin-prereq">🏢 تراکم</span><br>
+<span class="admin-status">فعال</span>
+</div>
+</div>
+
+<div class="admin-card" data-type="sabtAhval" onclick="inquiry('sabtAhval')">
+<div class="admin-img" style="background-image:url('https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600');"></div>
+<div class="admin-overlay"></div>
+<div class="admin-icon">🆔</div>
+<div class="admin-content">
+<h4>ثبت احوال</h4>
+<p>احراز هویت مالک و استعلام مشخصات</p>
+<span class="admin-prereq">🔑 کد ملی</span>
+<span class="admin-prereq">📅 تاریخ تولد</span><br>
+<span class="admin-status">فعال</span>
+</div>
+</div>
+
+<div class="admin-card" data-type="kadaster" onclick="inquiry('kadaster')">
+<div class="admin-img" style="background-image:url('https://images.unsplash.com/photo-1524661135-423995f22d0b?w=600');"></div>
+<div class="admin-overlay"></div>
+<div class="admin-icon">🗺️</div>
+<div class="admin-content">
+<h4>کاداستر</h4>
+<p>نقشه، کاربری اراضی و مختصات</p>
+<span class="admin-prereq">📍 مختصات GPS</span>
+<span class="admin-prereq">🗺️ نقشه ملک</span><br>
+<span class="admin-status">فعال</span>
+</div>
+</div>
+
+<div class="admin-card" data-type="ghave" onclick="inquiry('ghaveGhazai')">
+<div class="admin-img" style="background-image:url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600');"></div>
+<div class="admin-overlay"></div>
+<div class="admin-icon">⚖️</div>
+<div class="admin-content">
+<h4>قوه قضاییه</h4>
+<p>استعلام بازداشتی و خدمات قضایی</p>
+<span class="admin-prereq">🔑 شماره پرونده</span>
+<span class="admin-prereq">👤 کد ملی</span><br>
+<span class="admin-status">فعال</span>
+</div>
+</div>
+
+<div class="admin-card" data-type="export" onclick="inquiry('export')">
+<div class="admin-img" style="background-image:url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600');"></div>
+<div class="admin-overlay"></div>
+<div class="admin-icon">🌍</div>
+<div class="admin-content">
+<h4>صادرات و واردات</h4>
+<p>املاک بین‌المللی و ارزی</p>
+<span class="admin-prereq">🌐 کشور مقصد</span>
+<span class="admin-prereq">💱 ارز</span><br>
+<span class="admin-status">فعال</span>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="section" id="tech">
+<div class="section-header">
+<h2>فناوری‌های هوشمند پلتفرم</h2>
+<div class="line"></div>
+<p>مجهز به پیشرفته‌ترین فناوری‌های روز دنیا</p>
+</div>
+<div class="tech-grid">
+<div class="tech-card"><div class="t-icon">🤖</div><h4>هوش مصنوعی (AI)</h4><p>تخمین قیمت، پیشنهاد ملک، تشخیص اسناد جعلی و ارزیابی ریسک معاملات.</p></div>
+<div class="tech-card"><div class="t-icon">⚡</div><h4>اتوماسیون کامل</h4><p>اجرای خودکار استعلامات، پیگیری پرونده و تولید مبایعه‌نامه.</p></div>
+<div class="tech-card"><div class="t-icon">🔐</div><h4>امنیت بلاک‌چین</h4><p>ثبت غیرقابل تغییر اسناد با HashChain و رمزنگاری AES-256.</p></div>
+<div class="tech-card"><div class="t-icon">🎤</div><h4>جستجوی صوتی</h4><p>جستجوی املاک با دستور صوتی به زبان فارسی.</p></div>
+<div class="tech-card"><div class="t-icon">📅</div><h4>نوبت‌دهی هوشمند</h4><p>رزرو آنلاین کارشناس قضایی و بازدید حضوری.</p></div>
+<div class="tech-card"><div class="t-icon">🌐</div><h4>چندزبانه</h4><p>پشتیبانی از فارسی، انگلیسی و عربی برای املاک بین‌المللی.</p></div>
+</div>
+</section>
+
+<section class="section" id="properties">
+<div class="section-header">
+<h2>آخرین آگهی‌های ثبت شده</h2>
+<div class="line"></div>
+<p>جدیدترین املاک با استعلام کامل</p>
+</div>
+<div class="prop-grid">
+<div class="prop-card">
+<div class="prop-img" style="background-image:url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600');"><span class="prop-badge">فوری</span></div>
+<div class="prop-body"><h4>آپارتمان ۱۰۰ متری</h4><p class="loc">📍 تهران، سعادت‌آباد</p><div class="prop-features"><span>🛏 ۲ خوابه</span><span>🚿 ۱ سرویس</span><span>🏢 طبقه ۳</span></div><span class="prop-price">۲ میلیارد تومان</span></div>
+</div>
+<div class="prop-card">
+<div class="prop-img" style="background-image:url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600');"><span class="prop-badge">ویژه</span></div>
+<div class="prop-body"><h4>ویلای دوبلکس لوکس</h4><p class="loc">📍 لواسان، دربند</p><div class="prop-features"><span>🛏 ۴ خوابه</span><span>🏊 استخر</span><span>🌳 ۳۰۰ متر</span></div><span class="prop-price">۱۵ میلیارد تومان</span></div>
+</div>
+<div class="prop-card">
+<div class="prop-img" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=600');"><span class="prop-badge">اداری</span></div>
+<div class="prop-body"><h4>دفتر کار اداری</h4><p class="loc">📍 مشهد، احمدآباد</p><div class="prop-features"><span>📐 ۸۰ متر</span><span>🏢 نوساز</span><span>🚗 پارکینگ</span></div><span class="prop-price">اجاره: ۵۰ میلیون</span></div>
+</div>
+</div>
+</section>
+
+<section class="cta" id="appointment">
+<h3>همین حالا استعلام ملک خود را بگیرید</h3>
+<p>با وارد کردن کد پستی یا آدرس ملک، تمامی استعلام‌ها را در کمتر از ۵ دقیقه دریافت کنید</p>
+<button onclick="bookAppointment()">📅 رزرو نوبت کارشناس</button>
+<button onclick="inquiry('all')">🔍 شروع استعلام کامل</button>
+</section>
+
+<div class="ai-chat">
+<div class="ai-box" id="aiBox">
+<div class="ai-header"><span>🤖 مشاور هوشمند املاک</span><span onclick="toggleAI()" style="cursor:pointer;">✕</span></div>
+<div class="ai-body" id="aiBody"><div class="ai-msg bot">سلام! من مشاور هوشمند پلتفرم ملی املاک ملکی هستم. چطور می‌توانم کمکتان کنم؟</div></div>
+<div class="ai-input">
+<input type="text" id="aiInput" placeholder="سوال خود را بنویسید..." onkeypress="if(event.key==='Enter')sendAI()">
+<button onclick="sendAI()">ارسال</button>
+</div>
+</div>
+<button class="ai-toggle" onclick="toggleAI()">🤖</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+<div class="footer-grid">
+<div><h5>🏛️ املاک ملکی ملی</h5><p>پلتفرم جامع خرید، فروش، اجاره و استعلام ملکی با اتصال به کلیه ادارات دولتی.</p></div>
+<div><h5>دسترسی سریع</h5><a href="#properties">خرید ملک</a><a href="#properties">فروش ملک</a><a href="#properties">اجاره ملک</a><a href="#services">استعلام</a></div>
+<div><h5>خدمات</h5><a href="#services">نظام مهندسی</a><a href="#services">ثبت اسناد</a><a href="#services">دارایی</a><a href="#appointment">نوبت‌دهی</a></div>
+<div><h5>تماس با ما</h5><p>📞 ۰۲۱-۱۲۳۴۵۶۷۸</p><p>✉️ info@amlak-melki.ir</p><p>📍 تهران، خیابان ولیعصر</p></div>
+</div>
+<div class="copyright">© ۱۴۰۳ - تمامی حقوق برای پلتفرم ملی املاک ملکی محفوظ است.</div>
+</footer>
+
+<script>
+const API_BASE = '/api';
+function showToast(msg, color = '#1a2332') {
+    const t = document.getElementById('toast');
+    t.style.background = color; t.textContent = msg; t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+}
+function handleLogin() {
+    showToast('ورود به پنل کاربری...');
+    fetch(`${API_BASE}/health`).then(r => r.json()).then(() => showToast('پلتفرم آماده است ✅', '#10b981')).catch(() => showToast('اتصال به سرور برقرار نشد', '#ef4444'));
+}
+function handleSearch() {
+    const city = document.getElementById('searchInput').value;
+    const deal = document.getElementById('dealType').value;
+    const type = document.getElementById('propertyType').value;
+    if (!city && !deal && !type) { showToast('لطفاً فیلتر جستجو را وارد کنید', '#ef4444'); return; }
+    showToast('در حال جستجو...');
